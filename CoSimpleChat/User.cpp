@@ -2,11 +2,9 @@
 #include <string>
 using namespace std;
 
-User::User(string name,  string nik, string password)
+User::User(string name,  string nik, string password): _userName(name), _userNik(nik), _userPassword(password)
 {
-	_userName = name;
-	_userNik = nik;
-	_userPassword = password;
+	
 }
 
 User::~User()
