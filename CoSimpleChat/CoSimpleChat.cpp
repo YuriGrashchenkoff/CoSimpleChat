@@ -3,26 +3,67 @@
 
 #include <iostream>
 #include "User.h"
+#include "Message.h"
 #include <vector>
+#include <string>
 
 using namespace std;
+
+string VerifyingRecipient(vector <User>& ollUsers)
+{
+    int size = ollUsers.size();
+    string toUser;
+    while (true)
+    {
+        cout << "Enter the recipient's nickname:\t";
+        cin >> toUser;
+        for (int i = 0; i < size; ++i)
+        {
+            if (toUser == ollUsers[i].getUserNik())
+            {
+                return toUser;
+            }
+        }
+        cout << "\n\tThere is no such user";
+    }
+}
+
+
+void  readMessage(string user, vector<Message>& allmess)
+{
+    int size = allmess.size();
+    for (int i = 0; i < size; ++i)
+    {
+        if (allmess[i].getSendToUser() == user || allmess[i].getSendToUser() == "all")
+        {
+            cout << "From whom: " << allmess[i].getSendFromUser() << endl;
+            cout << "Message: " << allmess[i].getMessage() << std::endl;
+        }
+        else
+        {
+            cout << "There are no messages for you!" << endl;
+        }
+    }
+}
 
 int main()
 {
     int mode;  //Переменная, в которой хранится выбранный режим
     int j;  //
-    
+
     string name;  //Имя, которое вводит пользователь
     string nik;  //Nik, который вводит пользователь
     string password;  //Пароль, который вводит пользователь
     string chekpassword;  //
+    string toUser; // поле получателя
+    string message;// вводимое пользователем сообщение
     vector <User> users;  //Создаем контейнер для хранения данных пользователей
-    
+    vector <Message> ollMessage; // Хранение всех сообщений
     bool run = true;
 
-    while(run)
+    while (run)
     {
- m1:
+    m1:
         cout << "********************************************" << endl;
         cout << "* This is a simple chat. Select an action! *" << endl;
         cout << "********************************************" << endl;
@@ -126,7 +167,7 @@ int main()
         cout << "* What do you want to do? *" << endl;
         cout << "***************************" << endl;
         cout << "1 - write a message" << endl;
-        cout << "2 - read message" << endl; 
+        cout << "2 - read message" << endl;
         cout << "0 - exit" << endl;
         cout << "---------------------------" << endl;
 
@@ -136,13 +177,16 @@ int main()
         {
         case 1:  //написать сообщение
         {
-
+            toUser = VerifyingRecipient(users);
+            cout << "\nEnter a message:\n";
+            cin >> message;
+            ollMessage.push_back(Message(nik, toUser, message));
         }
         break;
 
-        case 2:  //прочитать сообщение
+        case 2:  //прочитать сообщения
         {
-
+            readMessage(nik, ollMessage);
         }
         break;
 
