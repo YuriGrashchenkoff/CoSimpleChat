@@ -18,7 +18,7 @@ string Message::getSendToUser()
 	return _toLetter;
 }
 
-string Message::getMesage()
+string Message::getMessage()
 {
 	return _message;
 }
