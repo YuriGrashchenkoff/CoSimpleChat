@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CoSimpleChat.cpp" />
+    <ClCompile Include="CounterMessages.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
