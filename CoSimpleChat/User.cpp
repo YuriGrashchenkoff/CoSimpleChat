@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-User::User(string name,  string nik, string password): _userName(name), _userNik(nik), _userPassword(password)
+User::User(const string& name,const string& nik,const string& password): _userName(name), _userNik(nik), _userPassword(password)
 {
 	
 }
@@ -12,17 +12,17 @@ User::~User()
 
 }
 
-string User::getUserName()
+string User::getUserName() const
 {
 	return _userName;
 }
 
-string User::getUserNik()
+string User::getUserNik() const
 {
 	return _userNik;
 }
 
-string User::getUserPassword()
+string User::getUserPassword() const
 {
 	return _userPassword;
 }

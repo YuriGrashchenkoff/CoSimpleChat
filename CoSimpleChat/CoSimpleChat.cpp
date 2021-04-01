@@ -14,9 +14,9 @@ bool run = true;
 bool run1;
 vector <User> users;  //Создаем контейнер для хранения данных пользователей
 //---------------------------------------------------------------------------------------------------------------------------------
-string VerifyingRecipient(vector <User>& ollUsers) // проверяем есть ли пользователь которому мы будем писать сообщение
+const string& verifyingRecipient(const vector <User>& ollUsers) // проверяем есть ли пользователь которому мы будем писать сообщение
 {
-	size_t size = ollUsers.size();
+	const auto size = ollUsers.size();
 	string toUser;
 	while (true)
 	{
@@ -24,7 +24,7 @@ string VerifyingRecipient(vector <User>& ollUsers) // проверяем ест�
 		cout << "If you want to send the message all enter - all:\n";
 		//(cin >> toUser).get();// если не будет работать cin раскоментить эту строку
 		getline(cin, toUser);
-		for (int i = 0; i < size; ++i)
+		for (size_t i = 0; i < size; ++i)
 		{
 			if (toUser == ollUsers[i].getUserNik() || toUser == "all")
 			{
@@ -36,11 +36,11 @@ string VerifyingRecipient(vector <User>& ollUsers) // проверяем ест�
 }
 
 //--------------------------------------------------------------------------------------------------------------------
-void  readMessage(string user, vector<Message>& allmess) // чтение всех сообщений для пользователя
+void  readMessage(const string& user, const vector<Message>& allmess) // чтение всех сообщений для пользователя
 {
 	int count = 0;
-	size_t size = allmess.size();
-	for (int i = 0; i < size; ++i)
+	const auto size = allmess.size();
+	for (size_t i = 0; i < size; ++i)
 	{
 		if (allmess[i].getSendToUser() == user || allmess[i].getSendToUser() == "all")
 		{
@@ -55,15 +55,15 @@ void  readMessage(string user, vector<Message>& allmess) // чтение все�
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------
-void  readMessageUser(string user, vector<Message>& allmess)// чтение сообщений от определённого пользователя
+void  readMessageUser(const string& user, const vector<Message>& allmess)// чтение сообщений от определённого пользователя
 {
 	int count = 0;
 	string fromUser;
 	cout << "Enter the nickname of the user whose messages you want to read\n";
 	//(cin >> fromUser).get();// если не будет работать cin раскоментить эту строку
 	getline(cin, fromUser);
-	size_t size = allmess.size();
-	for (int i = 0; i < size; ++i)
+	const auto size = allmess.size();
+	for (size_t i = 0; i < size; ++i)
 	{
 		if (allmess[i].getSendToUser() == user || allmess[i].getSendToUser() == "all")
 		{
@@ -78,9 +78,9 @@ void  readMessageUser(string user, vector<Message>& allmess)// чтение со
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------
-string regUser()  //Функция регистрации пользователя
+const string& regUser()  //Функция регистрации пользователя
 {
-	bool run_ = false;
+	bool run_ = false; // неудачное название !!!!!!!
 	string name;  //Имя, которое вводит пользователь
 	string nik;  //Nik, который вводит пользователь
 	string password;  //Пароль, который вводит пользователь
@@ -94,9 +94,9 @@ string regUser()  //Функция регистрации пользовател
 		cout << "" << endl;
 
 		//Проверка на предмет наличия в базе пользователя с только что введенным ником
-		for (int i = 0; i < users.size(); i++)
+		for (auto& user : users)
 		{
-			if (users[i].getUserNik() == nik)
+			if (user.getUserNik() == nik)
 			{
 				cout << "Nick's busy. Enter another one!" << endl;
 				cout << "" << endl;
@@ -129,8 +129,6 @@ string loginUser()  //Функция входа
 {
 	bool run_;
 	string nik;  //Nik, который вводит пользователь
-	string password;  //Пароль, который вводит пользователь
-	string chekpassword;  //
 	int j;  //
 
 	do
@@ -143,11 +141,11 @@ string loginUser()  //Функция входа
 
 		j = -1;
 
-		for (int i = 0; i < users.size(); i++)  //ищем пользователя с таким ником
+		for (size_t i = 0; i < users.size(); i++)  //ищем пользователя с таким ником
 		{
 			if (users[i].getUserNik() == nik)
 			{
-				j = i;
+				j = static_cast<int>(i);
 			}
 		}
 
@@ -160,14 +158,14 @@ string loginUser()  //Функция входа
 
 	} while (run_);
 
-	chekpassword = users[j].getUserPassword();  //запрашиваем пароль для этого ника из контейнера
-
+	string password;  //Пароль, который вводит пользователь
 	cout << "Enter password:" << endl;
 	//(cin >> password).get();// если не будет работать cin раскоментить эту строку
 	getline(cin, password);
 	cout << "" <<endl;
 
-	if (chekpassword == password)  //Сравниваем пароли,если совпадают
+	// j - может быть равен -1 !!!!!!
+	if (password == users[j].getUserPassword())  //Сравниваем пароли,если совпадают
 	{
 		cout << "--- You have successfully logged in! ---" << endl;
 		cout << "" << endl;
@@ -191,13 +189,13 @@ void exitProg() //функция выхода
 	run1 = false;
 }
 //------------------------------------------------------------------------------------------------------------------
-int listUsers(int index, vector <User>& ollUsers) // вывод списка пользователей
+size_t listUsers(size_t index, vector <User>& ollUsers) // вывод списка пользователей
 {
-	size_t size = ollUsers.size();
+	const auto size = ollUsers.size();
 	if (size > index)  // если пользователей увеличилось, выводим обновлённый список
 	{
 		cout << "\t\t\t\t\t\t\t\tList of users:\n";
-		for (int i = 0; i < size; ++i)
+		for (size_t i = 0; i < size; ++i)
 		{
 			cout << "\t\t\t\t\t\t" << i + 1 << ") " << ollUsers[i].getUserNik() << endl;
 		}
@@ -210,44 +208,44 @@ int listUsers(int index, vector <User>& ollUsers) // вывод списка п�
 	return index;
 }
 //----------------------------------------------------------------------------------------------------------------------
-void currentUser(string getname) // вывод пользователя который в настоящее время пользуется чатом
+void currentUser(const string& getName) // вывод пользователя который в настоящее время пользуется чатом
 {
-	if (getname == "")
+	if (getName.empty())
 	{
 		cout << "\n\t\t\t\t\t\t---No one is using the chat right now---\n";
 	}
 	else
 	{
-		cout << "\n\t\t\t\t\t\t--Now the chat is used by: " << getname << "---"<<endl;
+		cout << "\n\t\t\t\t\t\t--Now the chat is used by: " << getName << "---"<<endl;
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-int newMessenger(vector <Message>& ollMessage, vector <CounterMessages>& oldMessage, bool text, string nik) // извещеие о наличии новых сообщений
+int newMessenger(vector <Message>& ollMessage, vector <CounterMessages>& oldMessage, const bool showMessages, const string& nik) // извещеие о наличии новых сообщений
 {
-	int oldcounter=0;
-	int newcounter = 0;
-	size_t newIndex = ollMessage.size();
-	size_t oldIndex = oldMessage.size();
+	int oldCounter=0;
+	int newCounter = 0;
+	const auto newIndex = ollMessage.size();
+	const auto oldIndex = oldMessage.size();
 	
-	for (int i = 0; i < newIndex; ++i)
+	for (size_t i = 0; i < newIndex; ++i)
 		{
 			if (ollMessage[i].getSendToUser() == nik)
 			{
-				newcounter++;
+				newCounter++;
 			}
 		}
-		for (int i = 0; i < oldIndex; ++i)
+		for (size_t i = 0; i < oldIndex; ++i)
 		{
 			if (oldMessage[i].getNikUser()==nik )
 			{
-				oldcounter++;
+				oldCounter++;
 			}
 		}
-		if (text)
+		if (showMessages)
 		{
-			cout << "\n\t\t\t\t\t\t!!!!!You have " << newcounter - oldcounter << " new messages!!!!\n";
+			cout << "\n\t\t\t\t\t\t!!!!!You have " << newCounter - oldCounter << " new messages!!!!\n";
 		}
-		return newcounter - oldcounter;
+		return newCounter - oldCounter;
 		
 }
 //------------------------------------------------------------------------------------------------------------------------
@@ -256,13 +254,12 @@ int main()
 	setlocale(LC_ALL, "");
 	char modeUsers;  //Переменная, в которой хранится выбранный режим
 	char modeMessage; // 
-	string toUser; // поле получателя
 	string message;// вводимое пользователем сообщение
-	string getname;  //Ник пользователя работающего в чате
+	string getName;  //Ник пользователя работающего в чате
 	vector <Message> ollMessage; // Хранение всех сообщений
 	vector <CounterMessages> newMessage;
 	vector <CounterMessages> oldMessage;
-	int count = 0; // контроль вывода списка пользователей
+	size_t count = 0; // контроль вывода списка пользователей
 	
 
 	while (run)
@@ -273,7 +270,7 @@ int main()
 		cout << "********************************************" << endl;
 		cout << "   1 - registration, 2 - login, 0 - exit" << endl;
 		cout << "--------------------------------------------" << endl;
-		currentUser(getname);
+		currentUser(getName);
 		count = listUsers(count, users);// вывод списка пользователей
 			
 		cin >> modeUsers;
@@ -282,18 +279,18 @@ int main()
 		{
 		case '1':  //регистрация
 		{
-			getname = regUser();
+			getName = regUser();
 			run1 = true;
-			currentUser(getname);
+			currentUser(getName);
 			break;
 		}
 
 		case '2':  //вход
 		{
-			getname = loginUser();
+			getName = loginUser();
 			run1 = true;
-			currentUser(getname);
-			newMessenger(ollMessage, oldMessage,1,getname);
+			currentUser(getName);
+			newMessenger(ollMessage, oldMessage,1,getName);
 			break;
 		}
 
@@ -333,12 +330,12 @@ int main()
 			{
 			case '1':  //написать сообщение
 			{
-				toUser = VerifyingRecipient(users);
+				string toUser = verifyingRecipient(users);
 				cout << "\nEnter a message:\n";
 				//(cin >> message).get();// если не будет работать cin раскоментить эту строку
 				getline(cin, message);
 				cout << endl;
-				ollMessage.push_back(Message(getname, toUser, message));//добавляем к списку сообщений
+				ollMessage.push_back(Message(getName, toUser, message));//добавляем к списку сообщений
 				newMessage.push_back(CounterMessages(toUser));// добавляем в счётчик новых сообщений
 				break;
 			}
@@ -346,11 +343,11 @@ int main()
 
 			case '2':  //прочитать сообщения
 			{
-				readMessage(getname, ollMessage);  // читаем все сообщения
-				int number = newMessenger(ollMessage, oldMessage, 0,getname); // присваиваем индексу разницу между количеством старых и новых сообщений
+				readMessage(getName, ollMessage);  // читаем все сообщения
+				const int number = newMessenger(ollMessage, oldMessage, 0,getName); // присваиваем индексу разницу между количеством старых и новых сообщений
 				for (int i = 0; i < number; ++i)                      // выравниваем количество новых и старых сообщений
 				{
-					oldMessage.push_back(CounterMessages(getname));         // теперь все сообщения прочитаны
+					oldMessage.push_back(CounterMessages(getName));         // теперь все сообщения прочитаны
 				}
 				cout << endl;
 				break;
@@ -359,11 +356,11 @@ int main()
 
 			case '3':  // прочитать сообщения от определённого пользователя
 			{
-				readMessageUser(getname, ollMessage);
-				int number = newMessenger(ollMessage, oldMessage,0,getname);
+				readMessageUser(getName, ollMessage);
+				const int number = newMessenger(ollMessage, oldMessage,0,getName);
 				for (int i = 0; i < number; ++i)
 				{
-					oldMessage.push_back(CounterMessages(getname));
+					oldMessage.push_back(CounterMessages(getName));
 				}
 				cout << endl;
 				break;

@@ -1,24 +1,21 @@
 #include "Message.h"
 
 
-
-
-
-Message::Message(string fromLetter, string toLetter, string message):_fromLetter(fromLetter),_toLetter(toLetter), _message(message)
+Message::Message(const string& message, const string& fromLetter, const string& toLetter): _message(message), _fromLetter(fromLetter), _toLetter(toLetter)
 {
 }
 
-string Message::getSendFromUser()
+string Message::getSendFromUser() const
 {
 	return _fromLetter;
 }
 
-string Message::getSendToUser()
+string Message::getSendToUser() const
 {
 	return _toLetter;
 }
 
-string Message::getMessage()
+string Message::getMessage() const
 {
 	return _message;
 }

@@ -5,15 +5,14 @@ using namespace std;
 class CounterMessages
 {
 public:
-	CounterMessages(string name); // подсчёт всех сообщений пользователя 
-	CounterMessages(int count) ;  // подсчёт старых сообщений пользователя
+	explicit CounterMessages(const string& name); // подсчёт всех сообщений пользователя 
+	explicit CounterMessages(const int count) ;  // подсчёт старых сообщений пользователя
 	int getCountMessages();
-	string getNikUser();
-	int totalMessanges();
-	~CounterMessages();
+	string& getNikUser() const;
+	int totalMessages();
 
 private:
 	int _count=0;
-	int _total;
+	int _total=0;
 	string _name;
 };

@@ -6,12 +6,12 @@ using namespace std;
 class User
 {
 public:
-	User(string name, string nik, string password);  //Конструктор
+	User(const string& name, const string& nik, const string& password);  //Конструктор
 	virtual ~User(); //Деструктор
 
-	string getUserName();  //Возвращает имя пользователя
-	string getUserNik();  //Возвращает ник
-	string getUserPassword(); //Возвращает пароль
+	string getUserName() const;  //Возвращает имя пользователя
+	string getUserNik() const;  //Возвращает ник
+	string getUserPassword() const; //Возвращает пароль
 		
 private:
 	string _userName;

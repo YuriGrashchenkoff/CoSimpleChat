@@ -1,21 +1,17 @@
 #pragma once
-#include <iostream>
 #include<string>
-#include "User.h"
-using namespace std;
+using namespace std;  
 
 
 class Message
 {
 public:
-    Message( string fromLetter,string toLetter,string message); // конструктор принимает логины от и кому от User. И само сообщение
+    Message(const string& message,const  string& fromLetter, const string& toLetter); // конструктор принимает логины от и кому от User. И само сообщение
        
-    string getSendFromUser();
-    string getSendToUser();
-    string getMessage();
-    
-    ~Message() {};
-  
+    string getSendFromUser() const;
+    string getSendToUser() const; 
+    string getMessage() const;
+    ~Message() = default;
 private:
 	string _message;
 	string _fromLetter;

@@ -1,10 +1,11 @@
 #include "CounterMessages.h"
 
-CounterMessages::CounterMessages( string name):_name(name)
+
+CounterMessages::CounterMessages(const string& name):_name(name)
 {
 }
 
-CounterMessages::CounterMessages( int count):_count(count)
+CounterMessages::CounterMessages(const int count):_count(count)
 {
 }
 
@@ -13,16 +14,13 @@ int CounterMessages::getCountMessages()
 	return _count;
 }
 
-string CounterMessages::getNikUser()
+const string& CounterMessages::getNikUser()
 {
 	return string();
 }
 
-int CounterMessages::totalMessanges()
+int CounterMessages::totalMessages()
 {
 	return _total;
 }
 
-CounterMessages::~CounterMessages()
-{
-}
