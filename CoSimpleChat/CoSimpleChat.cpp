@@ -125,7 +125,7 @@ void  readMessageUser(const string& user, const vector<Message>& allmess)// чт
 	return name;
 }
 //------------------------------------------------------------------------------------------------------------------------------------
-string loginUser(string& userNik)  //Функция входа
+void loginUser(string& userNik)  //Функция входа
 {
 	bool enterUser{false};
 	string nik;  //Nik, который вводит пользователь
@@ -168,13 +168,12 @@ string loginUser(string& userNik)  //Функция входа
 	{
 		cout << "--- You have successfully logged in! ---" << endl;
 		cout << "" << endl;
-		return userNik=nik; // меняем пользователя чата
+	 userNik = nik; // меняем пользователя чата
 	}
-	else  //иначе выходим
+	else  //иначе выходим  и пользователь остаётся прежним
 	{
 		cout << "Bed password!" << endl;
 		cout << "" << endl;
-		return userNik; // и пользователь остаётся прежним
 	}
 
 }
