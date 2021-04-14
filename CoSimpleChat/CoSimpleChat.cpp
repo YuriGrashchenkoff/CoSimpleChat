@@ -10,9 +10,6 @@
 
 using namespace std;
 
-
-
-vector <User> users;  //Создаем контейнер для хранения данных пользователей
 //---------------------------------------------------------------------------------------------------------------------------------
 string verifyingRecipient(const vector <User>& ollUsers) // проверяем есть ли пользователь которому мы будем писать сообщение
 {
@@ -78,7 +75,7 @@ void  readMessageUser(const string& user, const vector<Message>& allmess)// чт
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------
- string regUser()  //Функция регистрации пользователя
+ string regUser(vector <User>& users)  //Функция регистрации пользователя
 {
 	bool run_ = false; // неудачное название !!!!!!!
 	string name;  //Имя, которое вводит пользователь
@@ -125,7 +122,7 @@ void  readMessageUser(const string& user, const vector<Message>& allmess)// чт
 	return name;
 }
 //------------------------------------------------------------------------------------------------------------------------------------
-void loginUser(string& userNik)  //Функция входа
+void loginUser(string& userNik, vector <User>& users)  //Функция входа
 {
 	bool enterUser{false};
 	string nik;  //Nik, который вводит пользователь
@@ -248,6 +245,8 @@ int newMessenger(vector <Message>& ollMessage, vector <CounterMessages>& oldMess
 int main()
 {
 	setlocale(LC_ALL, "");
+
+	vector <User> users;  //Создаем контейнер для хранения данных пользователей
 	char modeUsers;  //Переменная, в которой хранится выбранный режим
 	char modeMessage; // 
 	string message;// вводимое пользователем сообщение
@@ -276,7 +275,7 @@ int main()
 		{
 		case '1':  //регистрация
 		{
-			getName = regUser();
+			getName = regUser(users);
 			messageMenu = true;
 			currentUser(getName);
 			break;
@@ -284,7 +283,7 @@ int main()
 
 		case '2':  //вход
 		{
-			loginUser(getName);
+			loginUser(getName,users);
 			messageMenu = true;
 			currentUser(getName);
 			newMessenger(ollMessage, oldMessage,1,getName);
