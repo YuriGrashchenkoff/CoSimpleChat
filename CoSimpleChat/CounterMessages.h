@@ -8,7 +8,7 @@ public:
 	explicit CounterMessages(const string& name); // подсчёт всех сообщений пользователя 
 	explicit CounterMessages(const int count) ;  // подсчёт старых сообщений пользователя
 	int getCountMessages();
-	string& getNikUser() const;
+	string getNikUser() const;
 	int totalMessages();
 
 private:

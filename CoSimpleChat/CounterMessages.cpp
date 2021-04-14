@@ -14,9 +14,9 @@ int CounterMessages::getCountMessages()
 	return _count;
 }
 
-const string& CounterMessages::getNikUser()
+ string CounterMessages::getNikUser() const
 {
-	return string();
+	return _name;
 }
 
 int CounterMessages::totalMessages()

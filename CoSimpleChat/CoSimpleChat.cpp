@@ -14,7 +14,7 @@ bool run = true;
 bool run1;
 vector <User> users;  //Создаем контейнер для хранения данных пользователей
 //---------------------------------------------------------------------------------------------------------------------------------
-const string& verifyingRecipient(const vector <User>& ollUsers) // проверяем есть ли пользователь которому мы будем писать сообщение
+string verifyingRecipient(const vector <User>& ollUsers) // проверяем есть ли пользователь которому мы будем писать сообщение
 {
 	const auto size = ollUsers.size();
 	string toUser;
@@ -78,7 +78,7 @@ void  readMessageUser(const string& user, const vector<Message>& allmess)// чт
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------
-const string& regUser()  //Функция регистрации пользователя
+ string regUser()  //Функция регистрации пользователя
 {
 	bool run_ = false; // неудачное название !!!!!!!
 	string name;  //Имя, которое вводит пользователь
@@ -125,61 +125,58 @@ const string& regUser()  //Функция регистрации пользов�
 	return name;
 }
 //------------------------------------------------------------------------------------------------------------------------------------
-string loginUser()  //Функция входа
+string loginUser(string& userNik)  //Функция входа
 {
-	bool run_;
+	bool enterUser{false};
 	string nik;  //Nik, который вводит пользователь
-	int j;  //
+     string accountPassword;  //пароль который сохранил пользователь для своего аккаунта
 
 	do
 	{
-		run_ = false;
 		cout << "Enter your nickname:" << endl;
 		//(cin >> nik).get();// если не будет работать cin раскоментить эту строку
 		getline(cin, nik);
 		cout <<""<<endl;
-
-		j = -1;
+		
 
 		for (size_t i = 0; i < users.size(); i++)  //ищем пользователя с таким ником
 		{
 			if (users[i].getUserNik() == nik)
 			{
-				j = static_cast<int>(i);
+			    accountPassword=users[i].getUserPassword();
+				enterUser = true;
+				break;
 			}
 		}
 
-		if (j == -1)  //если в база не оказалось такого ника
+		if (!enterUser)  //если в база не оказалось такого ника
 		{
 			cout << "There is no user with this nickname!" << endl;
 			cout << "" << endl;
-			run_ = true;
 		}
 
-	} while (run_);
+	} while (!enterUser);
 
-	string password;  //Пароль, который вводит пользователь
+	string enterPassword;  //Пароль, который вводит пользователь
 	cout << "Enter password:" << endl;
 	//(cin >> password).get();// если не будет работать cin раскоментить эту строку
-	getline(cin, password);
+	getline(cin, enterPassword);
 	cout << "" <<endl;
 
-	// j - может быть равен -1 !!!!!!
-	if (password == users[j].getUserPassword())  //Сравниваем пароли,если совпадают
+	
+	if (enterPassword == accountPassword)  //Сравниваем пароли,если совпадают
 	{
 		cout << "--- You have successfully logged in! ---" << endl;
 		cout << "" << endl;
+		return userNik=nik; // меняем пользователя чата
 	}
 	else  //иначе выходим
 	{
 		cout << "Bed password!" << endl;
 		cout << "" << endl;
+		return userNik; // и пользователь остаётся прежним
 	}
 
-	run = true;
-	run1 = true;
-
-	return nik;
 }
 //------------------------------------------------------------------------------------------------------------------
 void exitProg() //функция выхода
@@ -287,7 +284,7 @@ int main()
 
 		case '2':  //вход
 		{
-			getName = loginUser();
+			loginUser(getName);
 			run1 = true;
 			currentUser(getName);
 			newMessenger(ollMessage, oldMessage,1,getName);
@@ -335,7 +332,7 @@ int main()
 				//(cin >> message).get();// если не будет работать cin раскоментить эту строку
 				getline(cin, message);
 				cout << endl;
-				ollMessage.push_back(Message(getName, toUser, message));//добавляем к списку сообщений
+				ollMessage.push_back(Message(message,getName,toUser));//добавляем к списку сообщений
 				newMessage.push_back(CounterMessages(toUser));// добавляем в счётчик новых сообщений
 				break;
 			}
