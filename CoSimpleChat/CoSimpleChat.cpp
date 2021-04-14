@@ -10,8 +10,8 @@
 
 using namespace std;
 
-bool run = true;
-bool run1;
+
+
 vector <User> users;  //Создаем контейнер для хранения данных пользователей
 //---------------------------------------------------------------------------------------------------------------------------------
 string verifyingRecipient(const vector <User>& ollUsers) // проверяем есть ли пользователь которому мы будем писать сообщение
@@ -178,11 +178,11 @@ void loginUser(string& userNik)  //Функция входа
 
 }
 //------------------------------------------------------------------------------------------------------------------
-void exitProg() //функция выхода
+void exitProg(bool& userMenu, bool& messageMenu) //функция выхода
 {
 	cout << "--- See you next time! ---" << endl;
-	run = false;
-	run1 = false;
+	userMenu = false;
+	messageMenu = false;
 }
 //------------------------------------------------------------------------------------------------------------------
 size_t listUsers(size_t index, vector <User>& ollUsers) // вывод списка пользователей
@@ -257,8 +257,9 @@ int main()
 	vector <CounterMessages> oldMessage;
 	size_t count = 0; // контроль вывода списка пользователей
 	
-
-	while (run)
+	bool userMenu = true;
+	bool messageMenu;
+	while (userMenu)
 	{
 
 		cout << "********************************************" << endl;
@@ -276,7 +277,7 @@ int main()
 		case '1':  //регистрация
 		{
 			getName = regUser();
-			run1 = true;
+			messageMenu = true;
 			currentUser(getName);
 			break;
 		}
@@ -284,7 +285,7 @@ int main()
 		case '2':  //вход
 		{
 			loginUser(getName);
-			run1 = true;
+			messageMenu = true;
 			currentUser(getName);
 			newMessenger(ollMessage, oldMessage,1,getName);
 			break;
@@ -292,14 +293,14 @@ int main()
 
 		case '0':  //выход
 		{
-			exitProg();
+			exitProg(userMenu,messageMenu);
 			break;
 		}
 		default:
 		{
 			cout << "\nThere is no such menu item. Choose 1,2 or 0!!!\n";
-			run = true;
-			run1 = false;
+			userMenu = true;
+			messageMenu = false;
 			break;
 		}
 
@@ -307,7 +308,7 @@ int main()
 		}
 
 
-		while (run1)
+		while (messageMenu)
 		{
 			
 			cout << "***************************" << endl;
@@ -365,13 +366,13 @@ int main()
 
 			case '0':  //выход из кейса сообщений
 			{
-				run1 = false;
+				messageMenu = false;
 				break;
 			}
 			default:
 			{
 				cout << "\nThere is no such menu item. Choose 1,2,3 or 0!!!\n";
-				run = true;
+				userMenu = true;
 				break;
 			}
 			}
