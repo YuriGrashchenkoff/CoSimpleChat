@@ -7,7 +7,7 @@
 #include "CounterMessages.h"
 #include <vector>
 #include <string>
-
+#include<Windows.h>
 using namespace std;
 
 //---------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ string verifyingRecipient(const vector <User>& ollUsers) // проверяем �
 }
 
 //--------------------------------------------------------------------------------------------------------------------
-void  readMessage(const string& user, const vector<Message>& allmess) // чтение всех сообщений для пользователя
+void  readMessage(const string& user, const vector<Message>& allmess, const vector<Message>& timeMessage) // чтение всех сообщений для пользователя
 {
 	int count = 0;
 	const auto size = allmess.size();
@@ -42,6 +42,8 @@ void  readMessage(const string& user, const vector<Message>& allmess) // чте�
 		if (allmess[i].getSendToUser() == user || allmess[i].getSendToUser() == "all")
 		{
 			cout << "From whom: " << allmess[i].getSendFromUser() << endl;
+			cout << "Date of the message: " << timeMessage[i].getdayMessage()<<"/"
+				<< timeMessage[i].getmonthMessage() << "/" <<timeMessage[i].getyearMessage() << "/" << endl;
 			cout << "Message: " << allmess[i].getMessage() << endl;
 			++count;
 		}
@@ -52,7 +54,7 @@ void  readMessage(const string& user, const vector<Message>& allmess) // чте�
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------
-void  readMessageUser(const string& user, const vector<Message>& allmess)// чтение сообщений от определённого пользователя
+void  readMessageUser(const string& user, const vector<Message>& allmess, const vector<Message>& timeMessage)// чтение сообщений от определённого пользователя
 {
 	int count = 0;
 	string fromUser;
@@ -67,6 +69,8 @@ void  readMessageUser(const string& user, const vector<Message>& allmess)// чт
 			if (fromUser == allmess[i].getSendFromUser())
 			{
 				cout << "From whom: " << allmess[i].getSendFromUser() << endl;
+				cout << "Date of the message: " << timeMessage[i].getdayMessage() << "/"
+					<< timeMessage[i].getmonthMessage() << "/" << timeMessage[i].getyearMessage() << "/" << endl;
 				cout << "Message: " << allmess[i].getMessage() << std::endl;
 				++count;
 			}
@@ -242,6 +246,14 @@ int newMessenger(vector <Message>& ollMessage, vector <CounterMessages>& oldMess
 		
 }
 //------------------------------------------------------------------------------------------------------------------------
+void getTimeMessage( int& dayMessage, int& monthMessage,int& yearMessage)
+{
+	SYSTEMTIME dateMessage;
+	GetSystemTime(&dateMessage);
+	dayMessage = dateMessage.wDay;
+	monthMessage = dateMessage.wMonth;
+	yearMessage = dateMessage.wYear;
+}
 int main()
 {
 	setlocale(LC_ALL, "");
@@ -305,8 +317,10 @@ int main()
 
 
 		}
-
-
+		int dayMessage;
+		int monthMessage;
+		int yearMessage;
+		vector <Message> timeMessage; // Время создания всех сообщений
 		while (messageMenu)
 		{
 			
@@ -330,8 +344,10 @@ int main()
 				cout << "\nEnter a message:\n";
 				//(cin >> message).get();// если не будет работать cin раскоментить эту строку
 				getline(cin, message);
+				getTimeMessage(dayMessage, monthMessage, yearMessage);
 				cout << endl;
 				ollMessage.push_back(Message(message,getName,toUser));//добавляем к списку сообщений
+				timeMessage.push_back(Message(dayMessage, monthMessage, yearMessage)); // добавляем время сообщения
 				newMessage.push_back(CounterMessages(toUser));// добавляем в счётчик новых сообщений
 				break;
 			}
@@ -339,7 +355,7 @@ int main()
 
 			case '2':  //прочитать сообщения
 			{
-				readMessage(getName, ollMessage);  // читаем все сообщения
+				readMessage(getName, ollMessage, timeMessage);  // читаем все сообщения
 				const int number = newMessenger(ollMessage, oldMessage, 0,getName); // присваиваем индексу разницу между количеством старых и новых сообщений
 				for (int i = 0; i < number; ++i)                      // выравниваем количество новых и старых сообщений
 				{
@@ -352,7 +368,7 @@ int main()
 
 			case '3':  // прочитать сообщения от определённого пользователя
 			{
-				readMessageUser(getName, ollMessage);
+				readMessageUser(getName, ollMessage, timeMessage);
 				const int number = newMessenger(ollMessage, oldMessage,0,getName);
 				for (int i = 0; i < number; ++i)
 				{
