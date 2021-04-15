@@ -6,8 +6,8 @@ using namespace std;
 class Message
 {
 public:
-    Message(const string& message,const  string& fromLetter, const string& toLetter); // конструктор принимает логины от и кому от User. » само сообщение
-    Message(const int& dayMessage, const int& monthMessage, const int& yearMessage);// конструктор приниммает врем€ создани€ сообщеи€
+    // конструктор принимает логины от и кому от User. » само сообщение
+    Message(const string& message,const  string& fromLetter, const string& toLetter,const int& dayMessage, const int& monthMessage, const int& yearMessage); 
     string getSendFromUser() const;
     string getSendToUser() const; 
     string getMessage() const;
@@ -19,9 +19,9 @@ private:
 	string _message;
 	string _fromLetter;
 	string _toLetter;
-    int _dayMessage;
-    int _monthMessage;
-    int _yearMessage;
+    int _dayMessage=0;
+    int _monthMessage=0;
+    int _yearMessage=0;
   };
 
 
